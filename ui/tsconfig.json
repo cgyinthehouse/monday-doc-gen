@@ -1,0 +1,25 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "preserve",
+    "allowJs": true,
+    "checkJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "paths": {
+      "@docgen/*": [
+        "../docgen/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*",
+  ],
+  "references": [
+    {
+      "path": "../docgen"
+    }
+  ]
+}

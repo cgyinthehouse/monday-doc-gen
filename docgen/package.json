@@ -1,0 +1,21 @@
+{
+  "name": "doc-gen",
+  "version": "1.0.0",
+  "description": "document generator",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kentchen",
+  "license": "ISC",
+  "dependencies": {
+    "docxtemplater": "^3.51.1",
+    "pizzip": "^3.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.7",
+    "typescript": "^5.6.3"
+  }
+}

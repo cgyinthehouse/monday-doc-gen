@@ -1,19 +1,18 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "composite": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
-  },
-  "include": [
-    "src/**/*",
-    "tests/**/*"
-  ],
-  "references": [
-    {
-      "path": "../ui"
-    }
-  ]
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"composite": true,
+		"declaration": true,
+		"declarationMap": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitAny": false,
+		"outDir": "./dist",
+		"rootDir": "./src"
+	},
+	"include": ["src/**/*", "tests/**/*"],
+	"references": [
+		{
+			"path": "../ui"
+		}
+	]
 }

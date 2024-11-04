@@ -6,17 +6,13 @@
     "allowJs": true,
     "checkJs": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
     "rootDir": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@docgen/*": [
-        "../docgen/src/*"
-      ]
+      "@docgen/*": ["../docgen/src/*"]
     }
   },
-  "include": [
-    "src/**/*",
-  ],
+  "include": ["src/**/*"],
   "references": [
     {
       "path": "../docgen"

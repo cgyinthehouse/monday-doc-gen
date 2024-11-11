@@ -1,0 +1,19 @@
+query {
+  boards(ids: 7652880320) {
+    name
+    items_page(
+      limit:1
+      query_params: {order_by: [{column_id: "date__1", direction: desc}], rules: [{column_id: "name", compare_value: ["宜佳"]}]}
+    ) {
+      items {
+        name
+        column_values  {
+          value
+          column {
+            title
+          }
+        }
+      }
+    }
+  }
+}

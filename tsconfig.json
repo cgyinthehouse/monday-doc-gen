@@ -3,11 +3,10 @@
     // "declaration": true,
     // "declarationMap": true,
     "strict": true,
-    "target": "es2016",
+    "target": "es2020",
     "moduleDetection": "auto",
-    "module": "es2015",
+    "module": "es2020",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "Bundler"
   }
 }

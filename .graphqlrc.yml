@@ -1,0 +1,4 @@
+projects:
+  ui:
+    schema: ui/schema.graphql
+    documents: ui/src/graphql/*.{gql,js,ts,jsx,tsx}

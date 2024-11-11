@@ -4,3 +4,6 @@ data
 outputs
 templates
 *.tar.gz
+tsconfig.tsbuildinfo
+.env
+.env.local

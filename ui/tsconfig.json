@@ -2,20 +2,25 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "composite": true,
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "jsx": "preserve",
     "allowJs": true,
     "checkJs": true,
     "forceConsistentCasingInFileNames": true,
     "rootDir": "./src",
-    "baseUrl": ".",
-    "paths": {
-      "@docgen/*": ["../docgen/src/*"]
-    }
+    "moduleResolution": "Bundler",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types"
+    ]
   },
-  "include": ["src/**/*"],
-  "references": [
-    {
-      "path": "../docgen"
-    }
+  "files": [
+    "src/types/graphql.d.ts"
+  ],
+  "include": [
+    "src/**/*",
   ]
 }

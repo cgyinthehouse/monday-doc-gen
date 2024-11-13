@@ -5,7 +5,6 @@ import Document from "./components/Doc";
 import "monday-ui-react-core/dist/main.css";
 import { useQuery } from "@apollo/client";
 import { contractorsQuery } from "./graphql/query";
-// import contractorsQuery from "./graphql/contractors.gql";
 
 //Explore more Monday React Components here: https://style.monday.com/
 import {
@@ -41,13 +40,15 @@ const App = () => {
 
   useEffect(() => {
     if (data) {
-      setContractors([
+      const contractors = [
         ...new Set(
           data.boards[0].items_page.items.map(
             (item: { name: string }) => item.name
           )
         )
-      ] as string[]);
+      ] as string[];
+
+      setContractors(contractors);
     }
   }, [data]);
 
@@ -66,12 +67,13 @@ const App = () => {
       <Table
         columns={[
           { id: "contractor", title: "contractor", width: 100 },
-          { id: "date", title: "date", width: 100 },
+          { id: "date", title: "date", width: 150 },
           { id: "workers count", title: "workers count", width: 100 },
           { id: "document", title: "document", width: 100 }
         ]}
         emptyState={<TableEmptyState />}
         errorState={<TableErrorState />}
+        withoutBorder={false}
       >
         <TableHeader>
           <TableHeaderCell title="廠商" icon={Person} />

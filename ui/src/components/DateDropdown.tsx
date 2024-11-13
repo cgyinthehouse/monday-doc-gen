@@ -2,14 +2,24 @@ import React, { useState } from "react";
 import { Dropdown } from "monday-ui-react-core";
 
 interface Props {
-  options: string[];
+  defaultValue: string;
+  allOptions: string[];
 }
-const DateDropdown = (props: Props) => {
-  const [searchValue, setSearchValue] = useState("");
-  const onInputChange = (value: string) => {
-    setSearchValue(value);
+const DateDropdown = ({ defaultValue, allOptions }: Props) => {
+  const [date, setDate] = useState(defaultValue);
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value);
   };
 
-  return <Dropdown options={props.options} onInputChange={onInputChange} />;
+  return (
+    <Dropdown
+      defaultValue={date}
+      options={allOptions}
+      placeholder={defaultValue}
+      searchable={true}
+      onOptionSelect={handleDateChange}
+    />
+  );
 };
 export default DateDropdown;

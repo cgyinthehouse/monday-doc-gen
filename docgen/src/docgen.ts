@@ -29,8 +29,8 @@ export default function generateDoc(
     linebreaks: true
   });
 
-  const parsedDate = /\d+\-(\d+)\-(\d+)/.exec(date);
-  const [y, m, d] = parsedDate ? [...parsedDate] : ["", "", ""];
+  const parsedDate = /(\d+)\-(\d+)\-(\d+)/.exec(date);
+  const [, y, m, d] = parsedDate ? [...parsedDate] : ["", "", ""];
   doc.render({
     contractor,
     year: y,

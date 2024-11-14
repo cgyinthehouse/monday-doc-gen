@@ -1,27 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
-  docname: string;
+  contractor: string;
   date: string;
   count: number;
 }
-const Doc = ({ docname, date, count }: Props) => {
-  const [fileURL, setFileURL] = useState("");
+const Doc = ({ contractor, date, count }: Props) => {
+  const [fileURL, setFileURL] = useState<string>();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchDocument();
+  }, []);
 
   const fetchDocument = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8011/generate-doc", {
-        method: "POST",
-        body: JSON.stringify({ name: docname, date: date, count: count }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*"
+      const response = await fetch(
+        import.meta.env.DEV
+          ? "http://localhost:8011/generate-doc"
+          : "https://monday-docgen.ngrok.io",
+        {
+          method: "POST",
+          body: JSON.stringify({ name: contractor, date: date, count: count }),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*"
+          }
         }
-      });
-
-      console.log(docname, date, count);
+      );
 
       setFileURL(URL.createObjectURL(await response.blob()));
     } catch (e) {
@@ -39,9 +46,9 @@ const Doc = ({ docname, date, count }: Props) => {
       href={fileURL}
       target="_blank"
       type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      download
+      download={`${contractor}_${date}.docx`}
     >
-      {docname}
+      {contractor}
     </a>
   );
 };

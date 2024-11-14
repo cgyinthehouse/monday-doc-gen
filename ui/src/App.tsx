@@ -28,6 +28,12 @@ const App = () => {
   const { loading, error, data } = useQuery(contractorsQuery);
 
   useEffect(() => {
+    if (import.meta.env.PRO) {
+      document.title = import.meta.env.VITE_APP_TITLE;
+    }
+  }, []);
+
+  useEffect(() => {
     // Notice this method notifies the monday platform that user gains a first value in an app.
     // Read more about it here: https://developer.monday.com/apps/docs/mondayexecute#value-created-for-user/
     monday.execute("valueCreatedForUser");
@@ -67,7 +73,7 @@ const App = () => {
       <Table
         columns={[
           { id: "contractor", title: "contractor", width: 100 },
-          { id: "date", title: "date", width: 150 },
+          { id: "date", title: "date", width: 120 },
           { id: "workers count", title: "workers count", width: 100 },
           { id: "document", title: "document", width: 100 }
         ]}

@@ -2,7 +2,6 @@ import React, { memo, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { getContractorLatestOperationDate } from "../graphql/query";
 import { TableRow, TableCell } from "monday-ui-react-core";
-import DateDropdown from "./DateDropdown";
 import Doc from "./Doc";
 
 interface contractorsData {
@@ -78,17 +77,17 @@ const DataTableRows = ({ contractors, children }: props) => {
 
         const count: number = contractorsData[contractor][latestDate].count;
 
-        console.log(contractor, latestDate, count);
-
         return (
           <TableRow key={contractors.indexOf(contractor)}>
             <TableCell>{contractor}</TableCell>
             <TableCell>
-              <DateDropdown defaultValue={latestDate} allOptions={dates} />
+              {/* TODO: add date dropdown here,先暫時棄用 dropdown */}
+              {/* <DateDropdown defaultValue={latestDate} allOptions={dates} /> */}
+              {latestDate}
             </TableCell>
             <TableCell>{count}</TableCell>
             <TableCell>
-              {<Doc docname={contractor} date={latestDate} count={count} />}
+              {<Doc contractor={contractor} date={latestDate} count={count} />}
             </TableCell>
           </TableRow>
         );

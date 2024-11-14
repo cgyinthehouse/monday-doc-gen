@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "npm run stop && concurrently \"npm run server\" \"npm run expose\"",
-    "build": "vite build",
+    "build": "vite build --watch",
     "expose": "mapps tunnel:create -p 8301 -a 10226762",
     "server": "vite",
     "test": "react-scripts test",

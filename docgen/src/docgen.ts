@@ -10,7 +10,6 @@ export default function generateDoc(
   count: number
 ): Blob {
   const file = "2.危害因素告知單.docx";
-  const fileName = path.parse(file).name;
 
   // Load the docx file as binary content
   const content = fs.readFileSync(
@@ -52,7 +51,9 @@ export default function generateDoc(
   // Instead of writing it to a file, you could also
   // let the user downloa
 
-  fs.writeFileSync(path.resolve(__dirname, `../outputs/${fileName}.docx`), buf);
+
+  fs.writeFileSync(path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`), buf);
+
   return new Blob([buf], {
     type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   });

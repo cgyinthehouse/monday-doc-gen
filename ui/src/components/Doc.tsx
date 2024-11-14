@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface Props {
   contractor: string;
@@ -9,11 +9,7 @@ const Doc = ({ contractor, date, count }: Props) => {
   const [fileURL, setFileURL] = useState<string>();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchDocument();
-  }, []);
-
-  const fetchDocument = async () => {
+  const getDocumentURL = async () => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -38,18 +34,25 @@ const Doc = ({ contractor, date, count }: Props) => {
     }
   };
 
-  if (loading) return <div>loading...</div>;
-
   return (
-    <a
-      onClick={fetchDocument}
-      href={fileURL}
-      target="_blank"
-      type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      download={`${contractor}_${date}.docx`}
-    >
-      {contractor}
-    </a>
+    <>
+      <button
+        hidden={fileURL ? true : false}
+        disabled={loading}
+        onClick={getDocumentURL}
+      >
+        {loading ? "loading..." : "產生下載連結"}
+      </button>
+      <a
+        hidden={fileURL ? false : true}
+        href={fileURL}
+        target="_blank"
+        type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        download={`${contractor}_${date}.docx`}
+      >
+        {loading || contractor}
+      </a>
+    </>
   );
 };
 

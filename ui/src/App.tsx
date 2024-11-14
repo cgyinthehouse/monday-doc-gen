@@ -75,7 +75,7 @@ const App = () => {
           { id: "contractor", title: "contractor", width: 100 },
           { id: "date", title: "date", width: 120 },
           { id: "workers count", title: "workers count", width: 100 },
-          { id: "document", title: "document", width: 100 }
+          { id: "document", title: "document", width: 130 }
         ]}
         emptyState={<TableEmptyState />}
         errorState={<TableErrorState />}
@@ -83,9 +83,9 @@ const App = () => {
       >
         <TableHeader>
           <TableHeaderCell title="廠商" icon={Person} />
-          <TableHeaderCell title="日期" icon={Calendar} />
+          <TableHeaderCell title="出工日期" icon={Calendar} />
           <TableHeaderCell title="出工人數" icon={Team} />
-          <TableHeaderCell title="報表" icon={Doc} />
+          <TableHeaderCell title="危害告知單" icon={Doc} />
         </TableHeader>
         <TableBody>
           <DataTableRows contractors={contractors} />

@@ -1,6 +1,9 @@
 # monday-doc-gen
 
-Ensure you have **pnpm** installed. See [here](https://pnpm.io/installation)
+## Prerequisites
+
+Ensure you have **pnpm** installed. See [here](https://pnpm.io/installation).
+
 Create a `.env` file in `ui/` and set your `PORT` and `VITE_MONDAY_API_KEY` (Get your token [here](https://bes1688.monday.com/apps/manage/tokens)).
 
 ## Run the project

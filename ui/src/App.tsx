@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import mondaySdk from "monday-sdk-js";
-import Document from "./components/Doc";
 import "monday-ui-react-core/dist/main.css";
 import { useQuery } from "@apollo/client";
 import { contractorsQuery } from "./graphql/query";

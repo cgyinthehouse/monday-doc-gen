@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "npm run stop && concurrently \"npm run server\" \"npm run expose\"",
-    "build": "vite build --watch",
+    "build": "vite build && zip -r build.zip ./build",
     "expose": "mapps tunnel:create -p 8301 -a 10226762",
     "server": "vite",
     "test": "react-scripts test",
@@ -35,7 +35,6 @@
     ]
   },
   "devDependencies": {
-    "@mondaycom/apps-cli": "^4.3.0",
     "@types/node": "^22.7.8",
     "@types/react": "^18.3.11",
     "@types/react-dates": "^21.8.6",

@@ -51,9 +51,15 @@ export default function generateDoc(
   // Instead of writing it to a file, you could also
   // let the user downloa
 
- // TODO: 依照人數動態生成多頁文件
+  // TODO: 依照人數動態生成多頁文件
 
-  fs.writeFileSync(path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`), buf);
+  fs.existsSync(path.resolve(__dirname, "../outputs")) ||
+    fs.mkdirSync(path.resolve(__dirname, "../outputs"));
+
+  fs.writeFileSync(
+    path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
+    buf
+  );
 
   return new Blob([buf], {
     type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"

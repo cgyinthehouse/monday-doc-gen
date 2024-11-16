@@ -30,21 +30,16 @@ app.post("/generate-doc", async (req, res) => {
   if (
     fs.existsSync(path.resolve(__dirname, `../outputs/${name}_${date}.docx`))
   ) {
-    res.redirect(`/get-doc?name=${name}&date=${date}`);
+    const doc = await fs.openAsBlob(
+      path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
+    );
+    res.send(await doc.arrayBuffer());
     return;
   }
 
   console.log(name, date, count);
   const doc = generateDoc(name, date, count);
   res.send(Buffer.from(await doc.arrayBuffer()));
-});
-
-app.get("/get-doc", async (req, res) => {
-  const { name, date } = req.query;
-  const doc = await fs.openAsBlob(
-    path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
-  );
-  res.send(doc);
 });
 
 app.listen(port, () => {

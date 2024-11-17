@@ -15,13 +15,9 @@ app.use((req, res, next) => {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   );
   res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Methods", "POST");
+  res.set("Access-Control-Allow-Methods", ",GET, POST, OPTIONS");
   res.set("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") {
-    res.status(200).send();
-  } else {
-    next();
-  }
+  next();
 });
 
 app.post("/generate-doc", async (req, res) => {

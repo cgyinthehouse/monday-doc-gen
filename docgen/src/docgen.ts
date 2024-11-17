@@ -2,7 +2,6 @@ import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import fs from "fs";
 import path from "path";
-import { Blob } from "buffer";
 
 export default function generateDoc(
   contractor: string,

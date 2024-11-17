@@ -22,19 +22,19 @@ app.use((req, res, next) => {
 
 app.post("/generate-doc", async (req, res) => {
   const { name, date, count } = req.body;
+  let doc: Blob;
 
   if (
     fs.existsSync(path.resolve(__dirname, `../outputs/${name}_${date}.docx`))
   ) {
-    const doc = await fs.openAsBlob(
+    doc = await fs.openAsBlob(
       path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
     );
-    res.send(await doc.arrayBuffer());
-    return;
+  } else {
+    doc = generateDoc(name, date, count);
   }
 
   console.log(name, date, count);
-  const doc = generateDoc(name, date, count);
   res.send(Buffer.from(await doc.arrayBuffer()));
 });
 

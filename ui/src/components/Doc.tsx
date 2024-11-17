@@ -15,8 +15,11 @@ const Doc = ({ contractor, date, count }: Props) => {
   const mountedRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    if (fileURL !== "#" && mountedRef.current) mountedRef.current.click();
-  }, [fileURL]);
+    if (fileURL !== "#" && mountedRef.current) {
+      mountedRef.current.download = `${contractor}_${date}.docx`;
+      mountedRef.current.click();
+    }
+  }, [fileURL, contractor, date]);
 
   const getDocumentURL = async () => {
     setLoading(true);
@@ -43,10 +46,8 @@ const Doc = ({ contractor, date, count }: Props) => {
       ref={mountedRef}
       onClick={() => fileURL === "#" && getDocumentURL()}
       href={fileURL}
-      target="_blank"
-      rel="noreferrer"
+      target="_self"
       type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      download={`${contractor}_${date}.docx`}
     >
       {loading || contractor}
     </a>

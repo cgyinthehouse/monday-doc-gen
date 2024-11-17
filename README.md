@@ -8,10 +8,10 @@ Create a `.env` file in `ui/` and set your `PORT` and `VITE_MONDAY_API_KEY` (Get
 
 ## Run the project
 
-### If you want to use production mode
+### If you want to use the built version of the app
 1. Run `pnpm i -r && pnpm run -r build` to build the frontend and backend app.
 2. Run `cd docgen && pnpm start` to start the backend server.
-3. Open `ui/build/index.html` to start the app.
+3. Go to `ui/build/` and run `npx http-server` to start the web app.
 
-### If you want to use develop mode
-1. If you want to use develop mode, run `pnpm i -r && pnpm run -r server`.
+### If you want to use in development mode
+1. Run `pnpm i -r && pnpm run -r server`.

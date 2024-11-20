@@ -14,7 +14,7 @@ import {
 } from "monday-ui-react-core";
 import { Doc, Calendar, Person, Team } from "monday-ui-react-core/icons";
 import { TableEmptyState, TableErrorState } from "./components/TableStates";
-import DataTableRows from "./components/DataTableRows";
+import TableRowsContainer from "./components/TableRowsContainer";
 
 type resData = Parameters<Parameters<typeof monday.listen>[1]>[number]["data"];
 
@@ -72,7 +72,7 @@ const App = () => {
       <Table
         columns={[
           { id: "contractor", title: "contractor", width: 100 },
-          { id: "date", title: "date", width: 120 },
+          { id: "date", title: "date", width: 130 },
           { id: "workers count", title: "workers count", width: 100 },
           { id: "document", title: "document", width: 130 }
         ]}
@@ -87,7 +87,7 @@ const App = () => {
           <TableHeaderCell title="危害告知單" icon={Doc} />
         </TableHeader>
         <TableBody>
-          <DataTableRows contractors={contractors} />
+          <TableRowsContainer contractors={contractors} />
         </TableBody>
       </Table>
     </div>

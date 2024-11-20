@@ -1,16 +1,9 @@
 import React, { memo, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { getContractorLatestOperationDate } from "../graphql/query";
-import { TableRow, TableCell } from "monday-ui-react-core";
-import Doc from "./Doc";
+import TableRow from "./TableRow";
+import { contractorsData } from "../types";
 
-interface contractorsData {
-  [name: string]: {
-    [date: string]: {
-      count: number;
-    };
-  };
-}
 interface DataQueryResult {
   boards: [
     {
@@ -31,7 +24,7 @@ interface props {
   children?: React.ReactNode;
 }
 
-const DataTableRows = ({ contractors, children }: props) => {
+const TableRowsContainer = ({ contractors, children }: props) => {
   const { loading, error, data } = useQuery(getContractorLatestOperationDate, {
     variables: { contractors }
   });
@@ -70,26 +63,8 @@ const DataTableRows = ({ contractors, children }: props) => {
       {contractors.map((contractor) => {
         if (!contractorsData || !(contractor in contractorsData)) return;
 
-        const dates: string[] = Object.keys(contractorsData[contractor]);
-        const latestDate: string = dates.sort((a, b) => {
-          return b.localeCompare(a);
-        })[0];
-
-        const count: number = contractorsData[contractor][latestDate].count;
-
         return (
-          <TableRow key={contractors.indexOf(contractor)}>
-            <TableCell>{contractor}</TableCell>
-            <TableCell>
-              {/* TODO: add date dropdown here,先暫時棄用 dropdown */}
-              {/* <DateDropdown defaultValue={latestDate} allOptions={dates} /> */}
-              {latestDate}
-            </TableCell>
-            <TableCell>{count}</TableCell>
-            <TableCell>
-              {<Doc contractor={contractor} date={latestDate} count={count} />}
-            </TableCell>
-          </TableRow>
+          <TableRow key={contractor} contractor={contractor} contractorsData={contractorsData} />
         );
       })}
       {children}
@@ -97,4 +72,4 @@ const DataTableRows = ({ contractors, children }: props) => {
   );
 };
 
-export default memo(DataTableRows);
+export default memo(TableRowsContainer);

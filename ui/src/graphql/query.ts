@@ -14,7 +14,7 @@ export const contractorsQuery = gql`
 `;
 
 // TODO: figure out how to 每個廠商只抓最新出工日期
-export const getContractorLatestOperationDate = gql`
+export const getContractorLatestDate = gql`
   query getContractorLatestOperationDate($contractors: CompareValue!) {
     boards(ids: 7652880320) {
       items_page(
@@ -31,6 +31,44 @@ export const getContractorLatestOperationDate = gql`
         items {
           name
           column_values(types: [date, numbers]) {
+            text
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const getTodayContractors = gql`
+  query getTodayContractors {
+    boards(ids: 7652880320) {
+      items_page(
+        query_params: {
+          rules: { column_id: "date__1", compare_value: "TODAY" }
+        }
+      ) {
+        items {
+          name
+          column_values(types: [numbers]) {
+            text
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const getTomorrowContractors = gql`
+  query getTomorrowContractors {
+    boards(ids: 7652880320) {
+      items_page(
+        query_params: {
+          rules: { column_id: "date__1", compare_value: "TOMORROW" }
+        }
+      ) {
+        items {
+          name
+          column_values(types: [numbers]) {
             text
           }
         }

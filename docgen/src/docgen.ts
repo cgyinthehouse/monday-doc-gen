@@ -1,13 +1,15 @@
+/// <reference path="./types.d.ts" />
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
+import DocxMerger from "docx-merger";
 import fs from "fs";
 import path from "path";
 
-export default function generateDoc(
+export default async function generateDoc(
   contractor: string,
   date: string,
   count: number
-): Blob {
+): Promise<Blob> {
   const file = "2.危害因素告知單.docx";
 
   // Load the docx file as binary content
@@ -50,17 +52,42 @@ export default function generateDoc(
   // Instead of writing it to a file, you could also
   // let the user downloa
 
-  // TODO: 依照人數動態生成多頁文件
+  // FIXME: 解決合併後的檔案損毀原因
 
   fs.existsSync(path.resolve(__dirname, "../outputs")) ||
     fs.mkdirSync(path.resolve(__dirname, "../outputs"));
 
-  fs.writeFileSync(
-    path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
-    buf
-  );
+  for (let i = 0; i < Math.ceil(count / 24); i++) {
+    const fileName =
+      Math.ceil(count / 24) === 1
+        ? `${contractor}_${date}.docx`
+        : `${contractor}_${date}_${i + 1}.docx`;
+    fs.writeFileSync(path.resolve(__dirname, `../outputs/${fileName}`), buf);
+  }
 
-  return new Blob([buf], {
-    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  if (Math.ceil(count / 24) === 1) {
+    return new Blob([buf], {
+      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    });
+  }
+
+  const docx = new DocxMerger({}, Array(Math.ceil(count / 24)).fill(buf));
+  // unit8array, arraybuffer, blob, nodebuffer, base64
+  docx.save("uint8array", (data) => {
+    fs.writeFileSync(
+      path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
+      data
+    );
   });
+
+  return new Blob(
+    [
+      await fs.openAsBlob(
+        path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`)
+      )
+    ],
+    {
+      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    }
+  );
 }

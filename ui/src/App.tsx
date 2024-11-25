@@ -2,19 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import mondaySdk from "monday-sdk-js";
 import "monday-ui-react-core/dist/main.css";
-import { useQuery } from "@apollo/client";
-import { contractorsQuery } from "./graphql/query";
-
-//Explore more Monday React Components here: https://style.monday.com/
-import {
-  Table,
-  TableHeader,
-  TableHeaderCell,
-  TableBody
-} from "monday-ui-react-core";
-import { Doc, Calendar, Person, Team } from "monday-ui-react-core/icons";
-import { TableEmptyState, TableErrorState } from "./components/TableStates";
-import TableRowsContainer from "./components/TableRowsContainer";
+import DownloadButton from "@/components/DownloadButton";
 
 type resData = Parameters<Parameters<typeof monday.listen>[1]>[number]["data"];
 
@@ -23,8 +11,7 @@ const monday = mondaySdk();
 
 const App = () => {
   const [context, setContext] = useState<resData>();
-  const [contractors, setContractors] = useState<string[]>([""]);
-  const { loading, error, data } = useQuery(contractorsQuery);
+  const [text, setText] = useState<string>();
 
   useEffect(() => {
     if (import.meta.env.PRO) {
@@ -43,53 +30,18 @@ const App = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (data) {
-      const contractors = [
-        ...new Set(
-          data.boards[0].items_page.items.map(
-            (item: { name: string }) => item.name
-          )
-        )
-      ] as string[];
-
-      setContractors(contractors);
-    }
-  }, [data]);
-
-  const attentionBoxText = `Hello, your user_id is: ${
-    context && "user" in context ? context.user.id : "still loading"
-  }.`;
-  console.log(attentionBoxText);
   //Some example what you can do with context, read more here: https://developer.monday.com/apps/docs/mondayget#requesting-context-and-settings-data
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-  if (!data) return <h2>No Data</h2>;
+  useEffect(() => {
+    if (context && "user" in context) {
+      setText(`Hello, your user_id is: ${context.user.id}`);
+    }
+  }, [context]);
 
   return (
     <div className="App">
-      <Table
-        columns={[
-          { id: "contractor", title: "contractor", width: 100 },
-          { id: "date", title: "date", width: 130 },
-          { id: "workers count", title: "workers count", width: 100 },
-          { id: "document", title: "document", width: 130 }
-        ]}
-        emptyState={<TableEmptyState />}
-        errorState={<TableErrorState />}
-        withoutBorder={false}
-      >
-        <TableHeader>
-          <TableHeaderCell title="廠商" icon={Person} />
-          <TableHeaderCell title="出工日期" icon={Calendar} />
-          <TableHeaderCell title="出工人數" icon={Team} />
-          <TableHeaderCell title="危害告知單" icon={Doc} />
-        </TableHeader>
-        <TableBody>
-          <TableRowsContainer contractors={contractors} />
-        </TableBody>
-      </Table>
+      <p>{text}</p>
+      <DownloadButton children={"Download"} />
     </div>
   );
 };

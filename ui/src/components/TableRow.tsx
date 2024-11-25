@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import Doc from "./Doc";
+import DocLink from "./DocLink";
 import DateDropdown from "./DateDropdown";
 import { TableRow as MTableRow, TableCell } from "monday-ui-react-core";
 import { contractorsData } from "../types";
@@ -36,7 +36,7 @@ const TableRow = ({ contractorsData, contractor }: props) => {
       <DateDropdown defaultValue={date} allOptions={dates} setValue={setDate} />
       <TableCell>{count}</TableCell>
       <TableCell>
-        <Doc contractor={contractor} date={date} count={count} />
+        <DocLink contractor={contractor} date={date} count={count} />
       </TableCell>
     </MTableRow>
   );

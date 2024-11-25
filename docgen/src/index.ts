@@ -8,7 +8,7 @@ const app = express();
 const port = 8011;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use((req, res, next) => {
+app.use((_, res, next) => {
   res.set("Content-Disposition", `attachment; filename="document.docx"`);
   res.set(
     "Content-Length",
@@ -31,10 +31,10 @@ app.post("/generate-doc", async (req, res) => {
       path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
     );
   } else {
-    doc = generateDoc(name, date, count);
+    doc = await generateDoc(name, date, count);
   }
 
-  console.log(name, date, count);
+  console.log(new Date(Date.now()).toLocaleString(), name, date, count);
   res.send(Buffer.from(await doc.arrayBuffer()));
 });
 

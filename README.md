@@ -15,3 +15,11 @@ Create a `.env` file in `ui/` and set your `PORT` and `VITE_MONDAY_API_KEY` (Get
 
 ### If you want to use in development mode
 1. Run `pnpm i -r && pnpm run -r server`.
+
+
+### TODO:
+- [ ] Downloading button for tomorrow and today if these days has contractor show up.
+- [ ] Implement a periodic cleanup mechanism for obsolete output files.
+- [ ] Develop a toggle switch to select between DOCX or PDF formats.
+- [ ] Consolidate all DOCX files into a single PDF or ZIP archive.
+- [ ] Create Dockerfile and docker-compose.yml for containerization.

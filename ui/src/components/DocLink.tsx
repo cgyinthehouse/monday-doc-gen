@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import getDocumentURL from "@/utils/getDocumentURL";
 
 interface Props {
   contractor: string;
@@ -7,9 +8,6 @@ interface Props {
 }
 
 const Doc = ({ contractor, date, count }: Props) => {
-  const host = import.meta.env.DEV
-    ? "http://localhost:8011"
-    : "https://monday-docgen.ngrok.io";
   const [loading, setLoading] = useState(false);
   const [urlNeedUpdate, setUrlNeedUpdate] = useState(false);
   const url = useRef<string | null>(null);
@@ -24,32 +22,11 @@ const Doc = ({ contractor, date, count }: Props) => {
     }
   }, [date]);
 
-  const getDocumentURL = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${host}/generate-doc`, {
-        method: "POST",
-        body: JSON.stringify({ name: contractor, date: date, count: count }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*"
-        }
-      });
-
-      return URL.createObjectURL(await response.blob());
-    } catch (e) {
-      console.error(e);
-      throw e;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleClick = async (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     // 需要fetch new url 的情況
-    // 1. url.current 爲'#'時
+    // 1. mountedRef.current.href 沒有值時
     // 2. props 改變之後
 
     if (mountedRef.current?.href || !urlNeedUpdate) {
@@ -58,7 +35,9 @@ const Doc = ({ contractor, date, count }: Props) => {
 
     event.preventDefault();
     try {
-      url.current = await getDocumentURL();
+      setLoading(true);
+      url.current = await getDocumentURL(contractor, date, count);
+      setLoading(false);
       if (mountedRef.current) {
         mountedRef.current.href = url.current;
       }

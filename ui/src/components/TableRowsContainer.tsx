@@ -1,23 +1,9 @@
 import React, { memo, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { getContractorLatestOperationDate } from "../graphql/query";
+import { getContractorLatestDate } from "../graphql/query";
 import TableRow from "./TableRow";
 import { contractorsData } from "../types";
-
-interface DataQueryResult {
-  boards: [
-    {
-      items_page: {
-        items: [
-          {
-            name: string;
-            column_values: { text: string }[];
-          }
-        ];
-      };
-    }
-  ];
-}
+import { getContractorDateAndCountQueryResult } from "../types";
 
 interface props {
   contractors: string[];
@@ -25,13 +11,13 @@ interface props {
 }
 
 const TableRowsContainer = ({ contractors, children }: props) => {
-  const { loading, error, data } = useQuery(getContractorLatestOperationDate, {
+  const { loading, error, data } = useQuery(getContractorLatestDate, {
     variables: { contractors }
   });
   const [contractorsData, setContractorsData] =
     useState<contractorsData | null>(null);
 
-  const d1 = data as DataQueryResult;
+  const d1 = data as getContractorDateAndCountQueryResult;
 
   useEffect(() => {
     const contractorsData: contractorsData = {};
@@ -64,7 +50,11 @@ const TableRowsContainer = ({ contractors, children }: props) => {
         if (!contractorsData || !(contractor in contractorsData)) return;
 
         return (
-          <TableRow key={contractor} contractor={contractor} contractorsData={contractorsData} />
+          <TableRow
+            key={contractor}
+            contractor={contractor}
+            contractorsData={contractorsData}
+          />
         );
       })}
       {children}

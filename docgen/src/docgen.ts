@@ -1,8 +1,7 @@
-/// <reference path="./types.d.ts" />
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
-import DocxMerger from "docx-merger";
 import fs from "fs";
+import DocxMerger from "@valentiniljaz/docx-merger";
 import path from "path";
 
 export default async function generateDoc(
@@ -11,6 +10,8 @@ export default async function generateDoc(
   count: number
 ): Promise<Blob> {
   const file = "2.危害因素告知單.docx";
+  const CELLS_PER_PAGE = 24;
+  const pages = Math.ceil(count / CELLS_PER_PAGE);
 
   // Load the docx file as binary content
   const content = fs.readFileSync(
@@ -39,55 +40,39 @@ export default async function generateDoc(
     count
   });
 
+  fs.existsSync(path.resolve(__dirname, "../outputs")) ||
+    fs.mkdirSync(path.resolve(__dirname, "../outputs"));
+
   // Get the document as a zip (docx are zipped files)
   // and generate it as a Node.js buffer
   const buf = doc.getZip().generate({
-    type: "uint8array",
+    type: "nodebuffer",
     // Compression: DEFLATE adds a compression step.
     // For a 50MB document, expect 500ms additional CPU time.
     compression: "DEFLATE"
   });
 
-  // Write the Node.js Buffer to a file
-  // Instead of writing it to a file, you could also
-  // let the user downloa
+  if (pages > 1) {
+    const docx = new DocxMerger();
+    await docx.initialize({}, Array(pages).fill(buf));
+    const mergedFile = await docx.save("nodebuffer");
 
-  // FIXME: 解決合併後的檔案損毀原因
+    fs.writeFileSync(
+      path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
+      mergedFile
+    );
 
-  fs.existsSync(path.resolve(__dirname, "../outputs")) ||
-    fs.mkdirSync(path.resolve(__dirname, "../outputs"));
-
-  for (let i = 0; i < Math.ceil(count / 24); i++) {
-    const fileName =
-      Math.ceil(count / 24) === 1
-        ? `${contractor}_${date}.docx`
-        : `${contractor}_${date}_${i + 1}.docx`;
-    fs.writeFileSync(path.resolve(__dirname, `../outputs/${fileName}`), buf);
-  }
-
-  if (Math.ceil(count / 24) === 1) {
-    return new Blob([buf], {
+    return new Blob([mergedFile], {
       type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     });
   }
 
-  const docx = new DocxMerger({}, Array(Math.ceil(count / 24)).fill(buf));
-  // unit8array, arraybuffer, blob, nodebuffer, base64
-  docx.save("uint8array", (data) => {
-    fs.writeFileSync(
-      path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
-      data
-    );
-  });
-
-  return new Blob(
-    [
-      await fs.openAsBlob(
-        path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`)
-      )
-    ],
-    {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    }
+  fs.writeFileSync(
+    path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
+    buf
   );
+
+  return new Blob([buf], {
+    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  });
 }

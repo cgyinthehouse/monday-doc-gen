@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "npm run stop && concurrently \"npm run server\" \"npm run expose\"",
+    "start": "npm run stop && npm run build && vite preview --port 8301",
+    "dev": "npm run stop && concurrently \"npm run server\" \"npm run expose\"",
     "build": "vite build && zip -r build.zip ./build",
     "expose": "mapps tunnel:create -p 8301 -a 10226762",
     "server": "vite",

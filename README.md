@@ -18,7 +18,7 @@ Create a `.env` file in `ui/` and set your `PORT` and `VITE_MONDAY_API_KEY` (Get
 
 
 ### TODO:
-- [ ] Downloading button for tomorrow and today if these days has contractor show up.
+- [x] Downloading button for tomorrow and today if these days has contractor show up.
 - [ ] Implement a periodic cleanup mechanism for obsolete output files.
 - [ ] Develop a toggle switch to select between DOCX or PDF formats.
 - [ ] Consolidate all DOCX files into a single PDF or ZIP archive.

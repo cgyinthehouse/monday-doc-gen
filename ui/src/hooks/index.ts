@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { getTodayContractors, getTomorrowContractors } from "@/graphql/query";
 import getDocumentURL from "@/utils/getDocumentURL";

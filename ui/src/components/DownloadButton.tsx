@@ -3,12 +3,15 @@ import {
   SplitButton,
   SplitButtonMenu,
   MenuItem,
-  Toast
+  Toast,
+  Tooltip
 } from "monday-ui-react-core";
+import { Download } from "monday-ui-react-core/icons";
+
 import { useContractorsQuery } from "@/hooks";
-import { Download, Check } from "monday-ui-react-core/icons";
 import { NetworkStatus } from "@apollo/client";
-import getDocumentURL from "@/utils/getDocumentURL";
+import File from "@/utils/File";
+import getDate from "@/utils/getDate";
 
 interface props {
   children?: React.ReactNode;
@@ -31,19 +34,10 @@ const DownloadButton = ({ children }: props) => {
 
     console.log(data);
 
-    function getDate(day: "today" | "tomorrow") {
-      const today = new Date();
-      if (day === "tomorrow") today.setDate(today.getDate() + 1);
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-      const Day = String(today.getDate()).padStart(2, "0");
-
-      return `${year}-${month}-${Day}`;
-    }
-
-    const date = getDate(day);
+    const date = getDate(day, true);
     for (const [name, count] of Object.entries(data)) {
-      const url = await getDocumentURL(name, date, count);
+      const t = await new File(name, date, count).generate()
+      const url = t.getFileURL()
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", `${name}_${date}.docx`);
@@ -56,32 +50,34 @@ const DownloadButton = ({ children }: props) => {
 
   return (
     <>
-      <SplitButton
-        leftIcon={Download}
-        loading={loading || networkStatus === NetworkStatus.loading}
-        children={children}
-        onClick={handleClick}
-        secondaryDialogPosition={
-          SplitButton.secondaryDialogPositions.BOTTOM_END
-        }
-        secondaryDialogContent={
-          <SplitButtonMenu>
-            <MenuItem
-              isInitialSelectedState={day === "today"}
-              selected={day === "today"}
-              onClick={() => setDay("today")}
-              title="Today"
-            />
-            <MenuItem
-              isInitialSelectedState={day === "tomorrow"}
-              selected={day === "tomorrow"}
-              onClick={() => setDay("tomorrow")}
-              title="Tomorrow"
-              label={day === "tomorrow" ? <Check /> : ""}
-            />
-          </SplitButtonMenu>
-        }
-      />
+      <Tooltip content={`已選擇：${day === "today" ? "今日" : "明日"}`}>
+        <SplitButton
+          leftIcon={Download}
+          size="large"
+          loading={loading || networkStatus === NetworkStatus.loading}
+          children={children}
+          onClick={handleClick}
+          secondaryDialogPosition={
+            SplitButton.secondaryDialogPositions.BOTTOM_END
+          }
+          secondaryDialogContent={
+            <SplitButtonMenu>
+              <MenuItem
+                isInitialSelectedState={day === "today"}
+                selected={day === "today"}
+                onClick={() => setDay("today")}
+                title="今日危害告知單"
+              />
+              <MenuItem
+                isInitialSelectedState={day === "tomorrow"}
+                selected={day === "tomorrow"}
+                onClick={() => setDay("tomorrow")}
+                title="明日危害告知單"
+              />
+            </SplitButtonMenu>
+          }
+        />
+      </Tooltip>
       <Toast
         children={
           loading || networkStatus === NetworkStatus.loading

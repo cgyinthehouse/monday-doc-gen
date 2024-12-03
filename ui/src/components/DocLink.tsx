@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import getDocumentURL from "@/utils/getDocumentURL";
+import File from "@/utils/File";
 
 interface Props {
   contractor: string;
@@ -36,7 +36,7 @@ const Doc = ({ contractor, date, count }: Props) => {
     event.preventDefault();
     try {
       setLoading(true);
-      url.current = await getDocumentURL(contractor, date, count);
+      url.current = new File(contractor, date, count).getFileURL();
       setLoading(false);
       if (mountedRef.current) {
         mountedRef.current.href = url.current;

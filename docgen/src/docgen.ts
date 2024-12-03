@@ -1,7 +1,6 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import fs from "fs";
-import DocxMerger from "@valentiniljaz/docx-merger";
 import path from "path";
 
 export default async function generateDoc(
@@ -9,10 +8,24 @@ export default async function generateDoc(
   date: string,
   count: number
 ): Promise<Blob> {
-  const file = "2.危害因素告知單.docx";
+  let file = "2.危害因素告知單.docx";
   const CELLS_PER_PAGE = 24;
   const pages = Math.ceil(count / CELLS_PER_PAGE);
 
+  switch (pages) {
+    case 1:
+      break;
+    case 2:
+      file = "2.危害因素告知單-2.docx";
+      break;
+    case 3:
+      file = "2.危害因素告知單-3.docx";
+      break;
+    case 4:
+      file = "2.危害因素告知單-4.docx";
+    default:
+      throw new Error("page exceed");
+  }
   // Load the docx file as binary content
   const content = fs.readFileSync(
     path.resolve(__dirname, `../templates/${file}`),
@@ -51,21 +64,6 @@ export default async function generateDoc(
     // For a 50MB document, expect 500ms additional CPU time.
     compression: "DEFLATE"
   });
-
-  if (pages > 1) {
-    const docx = new DocxMerger();
-    await docx.initialize({}, Array(pages).fill(buf));
-    const mergedFile = await docx.save("nodebuffer");
-
-    fs.writeFileSync(
-      path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
-      mergedFile
-    );
-
-    return new Blob([mergedFile], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    });
-  }
 
   fs.writeFileSync(
     path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),

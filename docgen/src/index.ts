@@ -1,4 +1,5 @@
 import express from "express";
+import PizZip from "pizzip";
 import generateDoc from "./docgen";
 import bodyParser from "body-parser";
 import fs from "fs";
@@ -36,6 +37,25 @@ app.post("/generate-doc", async (req, res) => {
 
   console.log(new Date(Date.now()).toLocaleString(), name, date, count);
   res.send(Buffer.from(await doc.arrayBuffer()));
+});
+
+app.post("/pack", (req, res) => {
+  const { files } = req.body;
+  const zip = new PizZip();
+  for (const { name, date } of files) {
+    zip.file(
+      `${name}_${date}.docx`,
+      fs.readFileSync(
+        path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
+      )
+    );
+  }
+  res.send(
+    zip.generate({
+      type: "nodebuffer",
+      compression: "DEFLATE"
+    })
+  );
 });
 
 app.listen(port, () => {

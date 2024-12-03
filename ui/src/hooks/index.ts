@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { getTodayContractors, getTomorrowContractors } from "@/graphql/query";
-import getDocumentURL from "@/utils/getDocumentURL";
+import File from "@/utils/File";
 import {
   getContractorDateAndCountQueryResult,
   contractorsCount
@@ -50,7 +50,7 @@ export const useGetDocURL = (name: string, date: string, count: number) => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const url = await getDocumentURL(name, date, count);
+      const url = new File(name, date, count).getFileURL();
       setUrl(url);
       setLoading(false);
     })();

@@ -13,7 +13,7 @@ export default defineConfig(() => {
 		},
 		plugins: [react()],
 		server: {
-			port: 8301,
+			port: 8302,
 		},
 	};
 });

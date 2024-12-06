@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"build": "tsc",
-		"dev": "nodemon src/index.ts",
+		"dev": "PORT=8012 nodemon src/index.ts",
 		"start": "node dist/index.js",
 		"test": "vitest"
 	},

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "pnpm dlx http-server -p 8301 build",
-    "preview": "vite preview --port 8301",
+    "preview": "vite preview --port 8302",
     "dev": "npm run stop && concurrently \"npm run server\" \"npm run expose\"",
     "build": "vite build",
     "expose": "mapps tunnel:create -p 8301 -a 10226762",

@@ -8,7 +8,7 @@ import generateDoc from "./docgen";
 import cleaner from "./cleaner";
 
 const app = express();
-const port = 8011;
+const port = process.env.PORT || 8011;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use((_, res, next) => {
@@ -37,7 +37,15 @@ app.post("/generate-doc", async (req, res) => {
     doc = await generateDoc(name, date, count, workerType);
   }
 
-  console.log(new Date(Date.now()).toLocaleString(), name, date, count);
+  console.log(
+    new Date(Date.now()).toLocaleString("zh-TW", {
+      timeZone: "Asia/Taipei",
+      hour12: false
+    }),
+    name,
+    date,
+    count
+  );
   res.send(Buffer.from(await doc.arrayBuffer()));
 });
 

@@ -5,9 +5,6 @@ services:
     build: ./ui
     ports:
       - "8301:8301"
-    environment:
-      - VITE_MONDAY_API_KEY=YourMondayAPIKey
-      - NODE_ENV=production
     restart: unless-stopped
 
   docgen:

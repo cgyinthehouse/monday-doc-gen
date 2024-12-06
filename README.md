@@ -18,7 +18,6 @@
 
 ### Use docker
 
-1. Set your monday api key for the `ui` service in `docker-compose.yml`. Example file were provided in the repo.
 1. Run `docker compose up -d`
 
 ### TODO:

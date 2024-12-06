@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "npm run stop && vite preview --port 8301",
+    "start": "pnpm dlx http-server -p 8301 build",
+    "preview": "vite preview --port 8301",
     "dev": "npm run stop && concurrently \"npm run server\" \"npm run expose\"",
-    "build": "vite build && zip -r build.zip ./build",
+    "build": "vite build",
     "expose": "mapps tunnel:create -p 8301 -a 10226762",
     "server": "vite",
     "test": "react-scripts test",
@@ -16,9 +17,10 @@
   "dependencies": {
     "@apollo/client": "^3.11.8",
     "@mondaycom/apps-sdk": "^2.1.2",
+    "@vibe/core": "^3.1.0",
+    "@vibe/icons": "^1.0.0",
     "graphql": "^16.9.0",
-    "monday-sdk-js": "^0.5.5",
-    "monday-ui-react-core": "^2.139.4"
+    "monday-sdk-js": "^0.5.5"
   },
   "eslintConfig": {
     "extends": "react-app"

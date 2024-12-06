@@ -1,9 +1,11 @@
 import express from "express";
 import PizZip from "pizzip";
-import generateDoc from "./docgen";
 import bodyParser from "body-parser";
 import fs from "fs";
 import path from "path";
+import cron from "node-cron";
+import generateDoc from "./docgen";
+import cleaner from "./cleaner";
 
 const app = express();
 const port = 8011;
@@ -22,7 +24,7 @@ app.use((_, res, next) => {
 });
 
 app.post("/generate-doc", async (req, res) => {
-  const { name, date, count } = req.body;
+  const { name, date, count, workerType } = req.body;
   let doc: Blob;
 
   if (
@@ -32,7 +34,7 @@ app.post("/generate-doc", async (req, res) => {
       path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
     );
   } else {
-    doc = await generateDoc(name, date, count);
+    doc = await generateDoc(name, date, count, workerType);
   }
 
   console.log(new Date(Date.now()).toLocaleString(), name, date, count);
@@ -57,6 +59,8 @@ app.post("/pack", (req, res) => {
     })
   );
 });
+
+cron.schedule("0 0 * * *", cleaner);
 
 app.listen(port, () => {
   console.log(`server is listening on ${port} !!!`);

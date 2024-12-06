@@ -1,11 +1,37 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import { getTodayContractors, getTomorrowContractors } from "@/graphql/query";
 import File from "@/utils/File";
 import {
   getContractorDateAndCountQueryResult,
   contractorsCount
 } from "@/types";
+
+export const useContractorsLazyQuery = (time: "today" | "tomorrow") => {
+  let query = time === "today" ? getTodayContractors : getTomorrowContractors;
+  const [data, setData] = useState<contractorsCount>({});
+
+  const [getContractors, { data: d, loading, error, networkStatus }] =
+    useLazyQuery(query, {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: "network-only", // Used for first execution
+      nextFetchPolicy: "cache-first" // Used for subsequent executions
+    });
+
+  useEffect(() => {
+    if (d === undefined) return;
+    const data: contractorsCount = {};
+    (
+      d as getContractorDateAndCountQueryResult
+    ).boards[0].items_page.items.forEach((item) => {
+      data[item.name] = parseInt(item.column_values[0].text);
+    });
+
+    setData(data);
+  }, [d]);
+
+  return { getContractors, data, loading, error, networkStatus };
+};
 
 export const useContractorsQuery = (time: "today" | "tomorrow" = "today") => {
   let query = time === "today" ? getTodayContractors : getTomorrowContractors;

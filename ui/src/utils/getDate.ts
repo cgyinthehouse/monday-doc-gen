@@ -11,6 +11,7 @@ function getDate(
   formatted?: false
 ): { year: number; month: string; date: string };
 function getDate(day: "today" | "tomorrow", formatted?: true): string;
+
 function getDate(day: "today" | "tomorrow", formatted = false) {
   const today = new Date();
   if (day === "tomorrow") today.setDate(today.getDate() + 1);

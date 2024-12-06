@@ -6,8 +6,8 @@ import {
   MenuDivider,
   MenuItemButton,
   Toast
-} from "monday-ui-react-core";
-import { Download } from "monday-ui-react-core/icons";
+} from "@vibe/core";
+import { Download } from "@vibe/icons";
 
 import { useContractorsQuery } from "@/hooks";
 import { NetworkStatus } from "@apollo/client";
@@ -39,20 +39,7 @@ const DownloadMenu = () => {
       new File(name, date, count);
     }
 
-    try {
-      await File.generateDocs(File.files);
-      await File.pack()
-      const link = document.createElement("a");
-      link.href = File.getPackFileURL();
-      link.setAttribute("download", `危害告知單_${date}.zip`);
-      link.style.display = "none";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      File.relase();
-    } catch (e) {
-      console.error(e);
-    }
+    File.downloadFiles(date);
   };
 
   return (
@@ -71,14 +58,14 @@ const DownloadMenu = () => {
           selected={day === "today"}
           onClick={() => {
             setDay("today");
-            File.relase();
+            File.release();
           }}
           title={`今日 (${month}/${today_date})`}
         />
         <MenuItem
           selected={day === "tomorrow"}
           onClick={() => {
-            File.relase();
+            File.release();
             setDay("tomorrow");
           }}
           title={`明日 (${month}/${tomorrow_date})`}

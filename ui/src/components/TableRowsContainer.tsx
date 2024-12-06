@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { getContractorLatestDate } from "../graphql/query";
 import TableRow from "./TableRow";
-import { contractorsData } from "../types";
+import { contractorsDateCountData } from "../types";
 import { getContractorDateAndCountQueryResult } from "../types";
 
 interface props {
@@ -15,12 +15,12 @@ const TableRowsContainer = ({ contractors, children }: props) => {
     variables: { contractors }
   });
   const [contractorsData, setContractorsData] =
-    useState<contractorsData | null>(null);
+    useState<contractorsDateCountData | null>(null);
 
   const d1 = data as getContractorDateAndCountQueryResult;
 
   useEffect(() => {
-    const contractorsData: contractorsData = {};
+    const contractorsData: contractorsDateCountData = {};
     if (!d1) return;
     contractors.forEach((contractor) => {
       d1.boards[0].items_page.items.forEach((item) => {

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import mondaySdk from "monday-sdk-js";
-import "monday-ui-react-core/dist/main.css";
-// import DownloadButton from "@/components/DownloadButton";
-import DownloadMenu from "@/components/DownloadMenu";
+import "@vibe/core/tokens"
+import DownloadSection from "./components/DownloadSection";
 
 type resData = Parameters<Parameters<typeof monday.listen>[1]>[number]["data"];
 
@@ -42,8 +41,7 @@ const App = () => {
   return (
     <div className="App">
       <p>{text}</p>
-      <DownloadMenu />
-      {/* <DownloadButton children={"下載"} /> */}
+      <DownloadSection />
     </div>
   );
 };

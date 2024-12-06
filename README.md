@@ -2,20 +2,27 @@
 
 ## Prerequisites
 
-Ensure you have **pnpm** installed. See [here](https://pnpm.io/installation).
+1. Ensure you have **pnpm** installed. See [here](https://pnpm.io/installation).
 
-Create a `.env` file in `ui/` and set your `PORT` and `VITE_MONDAY_API_KEY` (Get your token [here](https://bes1688.monday.com/apps/manage/tokens)).
+2. Create a `.env` file in `ui/` and set your `VITE_MONDAY_API_KEY` (Get your token [here](https://bes1688.monday.com/apps/manage/tokens)) in it.
 
 ## Run the project
 
-### If you want to use the built version of the app
+### Use the built version of the app
+
 1. Run `pnpm i -r && pnpm run -r build && pnpm -r start`. This will build the frontend and backend app then start the production build.
 
-### If you want to use in development mode
+### Use development mode
+
 1. Run `pnpm i -r && pnpm run -r dev`.
 
+### Use docker
+
+1. Set your monday api key for the `ui` service in `docker-compose.yml`. Example file were provided in the repo.
+1. Run `docker compose up -d`
 
 ### TODO:
+
 - [x] Downloading button for tomorrow and today if these days has contractor show up.
 - [ ] Implement a periodic cleanup mechanism for obsolete output files.
 - [ ] Develop a toggle switch to select between DOCX or PDF formats.

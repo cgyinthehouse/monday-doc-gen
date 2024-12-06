@@ -7,7 +7,7 @@
 		"build": "tsc",
 		"dev": "nodemon src/index.ts",
 		"start": "node dist/index.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "vitest"
 	},
 	"author": "kentchen",
 	"license": "ISC",
@@ -16,14 +16,17 @@
 		"body-parser": "^1.20.3",
 		"docxtemplater": "^3.51.1",
 		"express": "^4.21.1",
+		"node-cron": "^3.0.3",
 		"pizzip": "^3.1.7"
 	},
 	"devDependencies": {
 		"@types/body-parser": "^1.19.5",
 		"@types/express": "^5.0.0",
 		"@types/node": "^22.7.7",
+		"@types/node-cron": "^3.0.11",
 		"nodemon": "^3.1.7",
 		"ts-node": "^10.9.2",
-		"typescript": "^5.6.3"
+		"typescript": "^5.6.3",
+		"vitest": "^2.1.8"
 	}
 }

@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  ui:
+    build: ./ui
+    ports:
+      - "8301:8301"
+    environment:
+      - VITE_MONDAY_API_KEY=YourMondayAPIKey
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  docgen:
+    build: ./docgen
+    ports:
+      - "8011:8011"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped

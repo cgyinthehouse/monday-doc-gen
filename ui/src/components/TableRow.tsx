@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
 import DocLink from "./DocLink";
 import DateDropdown from "./DateDropdown";
-import { TableRow as MTableRow, TableCell } from "monday-ui-react-core";
-import { contractorsData } from "../types";
+import { TableRow as MTableRow, TableCell } from "@vibe/core";
+import { contractorsDateCountData } from "../types";
 
 interface props {
   contractor: string;
-  contractorsData: contractorsData;
+  contractorsData: contractorsDateCountData;
 }
 
 const TableRow = ({ contractorsData, contractor }: props) => {

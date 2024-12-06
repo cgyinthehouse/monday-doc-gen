@@ -3,10 +3,34 @@ import PizZip from "pizzip";
 import fs from "fs";
 import path from "path";
 
+const workerTypes = [
+  "粗工",
+  "鋼構工",
+  "清潔工",
+  "泵送工",
+  "石材工",
+  "防水工",
+  "鋼筋工",
+  "電銲工",
+  "門窗工",
+  "測量工",
+  "外籍工作者",
+  "油漆工",
+  "模板工",
+  "裝修工",
+  "機械工",
+  "泥做工",
+  "電梯工",
+  "鷹架工",
+  "西工",
+  "水電工"
+] as const;
+
 export default async function generateDoc(
   contractor: string,
   date: string,
-  count: number
+  count: number,
+  workerType: (typeof workerTypes)[number]
 ): Promise<Blob> {
   let file = "2.危害因素告知單.docx";
   const CELLS_PER_PAGE = 24;
@@ -50,7 +74,8 @@ export default async function generateDoc(
     year: y,
     month: m,
     date: d,
-    count
+    count,
+    workerType: workerType === undefined ? "佔位文字" : workerType
   });
 
   fs.existsSync(path.resolve(__dirname, "../outputs")) ||

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Dropdown } from "monday-ui-react-core";
+import { Dropdown } from "@vibe/core";
 
 interface Props {
   defaultValue: string;
@@ -15,7 +15,7 @@ const DateDropdown = ({ defaultValue, allOptions, setValue }: Props) => {
   }, [allOptions]);
   return (
     <Dropdown
-      defaultValue={defaultValue}
+      defaultValue={[defaultValue]}
       options={options}
       placeholder={defaultValue}
       searchable={true}

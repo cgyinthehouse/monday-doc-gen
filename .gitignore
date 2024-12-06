@@ -8,3 +8,4 @@ build*
 *tsconfig.tsbuildinfo
 *.env
 *.env.local
+docker-compose.yml

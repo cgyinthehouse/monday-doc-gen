@@ -1,10 +1,13 @@
+import { workerTypes } from "@/types";
+
 const host = import.meta.env.DEV
   ? "http://localhost:8011"
   : "https://monday-docgen.ngrok.io";
-async function generateDoc(
+async function fetchGenerateDoc(
   name: string,
   date: string,
-  count: number
+  count: number,
+  workerType?: workerTypes
 ): Promise<Response> {
   try {
     const response = await fetch(`${host}/generate-doc`, {
@@ -22,8 +25,7 @@ async function generateDoc(
     throw e;
   }
 }
-
-async function packFiles(files: File[]): Promise<Response> {
+async function fetchPackedFiles(files: File[]): Promise<Response> {
   try {
     const response = await fetch(`${host}/pack`, {
       method: "POST",
@@ -56,7 +58,7 @@ class File {
 
   async generate(): Promise<this> {
     try {
-      const res = await generateDoc(this.name, this.date, this.count);
+      const res = await fetchGenerateDoc(this.name, this.date, this.count);
       this._docBlob = await res.blob();
       return this;
     } catch (e) {
@@ -92,9 +94,10 @@ class File {
     }
     return Buffer.from(await this._docBlob.arrayBuffer());
   }
-  static async pack() {
+
+  static async pack(): Promise<void> {
     try {
-      const res = await packFiles(File.files);
+      const res = await fetchPackedFiles(File.files);
       File.packedfilesURL = URL.createObjectURL(await res.blob());
     } catch (e) {
       console.error(e);
@@ -102,12 +105,32 @@ class File {
     }
   }
 
-  static async generateDocs(files: File[]) {
+  static async generateDocs(files: File[]): Promise<void> {
     await Promise.all(files.map(async (file) => await file.generate()));
   }
 
-  static relase() {
+  static release(): void {
     File.files = [];
+  }
+
+  static async downloadFiles(date: string): Promise<void> {
+    try {
+      await File.generateDocs(File.files);
+      await File.pack();
+      const url = File.getPackFileURL();
+
+      // Create a link element to download the zip file
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `危害告知單_${date}.zip`);
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      File.release();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 export default File;

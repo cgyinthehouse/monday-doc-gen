@@ -2,7 +2,7 @@ import { workerTypes } from "@/types";
 
 const host = import.meta.env.DEV
   ? "http://localhost:8012"
-  : "https://monday-docgen.ngrok.io";
+  : import.meta.env.VITE_NGROK_DOCGEN_URL || "https://monday-docgen.ngrok.io";
 async function fetchGeneratedDoc(
   name: string,
   date: string,

@@ -3,14 +3,18 @@ version: '3'
 services:
   ui:
     build: ./ui
+    image: docgen-ui:latest
     ports:
-      - "8301:8301"
+      - "8302:8301"
     restart: unless-stopped
+    depends_on:
+      - docgen
 
   docgen:
     build: ./docgen
+    image: docgen:latest
     ports:
-      - "8011:8011"
+      - "8012:8011"
     environment:
       - NODE_ENV=production
     restart: unless-stopped

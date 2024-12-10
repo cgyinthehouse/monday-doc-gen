@@ -4,6 +4,6 @@ data
 outputs
 build*
 *.tar.gz
-*tsconfig.tsbuildinfo
-*.env
-*.env.local
+**tsconfig.tsbuildinfo
+**.env
+**.env.local

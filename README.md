@@ -18,12 +18,14 @@
 
 ### Use docker
 
+1. Ensure the `VITE_NGROK_DOCGEN_URL` is set to the correct endpoint in the `ui/.env`, otherwise it will default to `https://monday-docgen.ngrok.io`.
+
 1. Run `docker compose up -d`
 
 ### TODO:
 
 - [x] Downloading button for tomorrow and today if these days has contractor show up.
-- [ ] Implement a periodic cleanup mechanism for obsolete output files.
+- [x] Implement a periodic cleanup mechanism for obsolete output files.
 - [ ] Develop a toggle switch to select between DOCX or PDF formats.
 - [ ] Consolidate all DOCX files into a single PDF or ZIP archive.
-- [ ] Create Dockerfile and docker-compose.yml for containerization.
+- [x] Create Dockerfile and docker-compose.yml for containerization.

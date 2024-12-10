@@ -28,10 +28,12 @@ app.post("/generate-doc", async (req, res) => {
   let doc: Blob;
 
   if (
-    fs.existsSync(path.resolve(__dirname, `../outputs/${name}_${date}.docx`))
+    fs.existsSync(
+      path.resolve(__dirname, `../outputs/${name}_${workerType}_${date}.docx`)
+    )
   ) {
     doc = await fs.openAsBlob(
-      path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
+      path.resolve(__dirname, `../outputs/${name}_${workerType}_${date}.docx`)
     );
   } else {
     doc = await generateDoc(name, date, count, workerType);
@@ -52,11 +54,11 @@ app.post("/generate-doc", async (req, res) => {
 app.post("/pack", (req, res) => {
   const { files } = req.body;
   const zip = new PizZip();
-  for (const { name, date } of files) {
+  for (const { name, date, workerType } of files) {
     zip.file(
-      `${name}_${date}.docx`,
+      `${name}_${workerType}_${date}.docx`,
       fs.readFileSync(
-        path.resolve(__dirname, `../outputs/${name}_${date}.docx`)
+        path.resolve(__dirname, `../outputs/${name}_${workerType}_${date}.docx`)
       )
     );
   }

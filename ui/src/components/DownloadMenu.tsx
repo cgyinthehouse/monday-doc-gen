@@ -35,8 +35,13 @@ const DownloadMenu = () => {
 
     const date = getDate(day, true);
 
-    for (const [name, count] of Object.entries(data)) {
-      new File(name, date, count);
+    for (const [
+      name,
+      { count, foreignWorkerCount, workerType }
+    ] of Object.entries(data)) {
+      new File(name, date, count, workerType);
+      if (foreignWorkerCount > 0)
+        new File(name, date, foreignWorkerCount, "外籍工作者");
     }
 
     File.downloadFiles(date);

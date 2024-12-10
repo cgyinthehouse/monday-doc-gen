@@ -3,16 +3,21 @@ import { workerTypes } from "@/types";
 const host = import.meta.env.DEV
   ? "http://localhost:8012"
   : "https://monday-docgen.ngrok.io";
-async function fetchGenerateDoc(
+async function fetchGeneratedDoc(
   name: string,
   date: string,
   count: number,
-  workerType?: workerTypes
+  workerType: workerTypes
 ): Promise<Response> {
   try {
     const response = await fetch(`${host}/generate-doc`, {
       method: "POST",
-      body: JSON.stringify({ name, date, count }),
+      body: JSON.stringify({
+        name,
+        date,
+        count,
+        workerType
+      }),
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*"
@@ -49,16 +54,27 @@ class File {
   static files: File[] = [];
   static packedfilesURL: string | null = null;
 
-  constructor(public name: string, public date: string, public count: number) {
+  constructor(
+    public name: string,
+    public date: string,
+    public count: number,
+    public workerType: workerTypes
+  ) {
     this.name = name;
     this.date = date;
     this.count = count;
+    this.workerType = workerType;
     File.files.push(this);
   }
 
   async generate(): Promise<this> {
     try {
-      const res = await fetchGenerateDoc(this.name, this.date, this.count);
+      const res: Response = await fetchGeneratedDoc(
+        this.name,
+        this.date,
+        this.count,
+        this.workerType
+      );
       this._docBlob = await res.blob();
       return this;
     } catch (e) {

@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { useQuery, useLazyQuery } from "@apollo/client";
-import { getTodayContractors, getTomorrowContractors } from "@/graphql/query";
-import File from "@/utils/File";
+import {
+  getTodayContractorsV2,
+  getTomorrowContractorsV2
+} from "@/graphql/query";
 import {
   getContractorDateAndCountQueryResult,
-  contractorsCount
+  contractorsCount,
+  workerTypes
 } from "@/types";
 
 export const useContractorsLazyQuery = (time: "today" | "tomorrow") => {
-  let query = time === "today" ? getTodayContractors : getTomorrowContractors;
+  let query =
+    time === "today" ? getTodayContractorsV2 : getTomorrowContractorsV2;
   const [data, setData] = useState<contractorsCount>({});
 
   const [getContractors, { data: d, loading, error, networkStatus }] =
@@ -24,7 +28,11 @@ export const useContractorsLazyQuery = (time: "today" | "tomorrow") => {
     (
       d as getContractorDateAndCountQueryResult
     ).boards[0].items_page.items.forEach((item) => {
-      data[item.name] = parseInt(item.column_values[0].text);
+      data[item.column_values[0].text] = {
+        count: parseInt(item.column_values[2].text),
+        workerType: item.column_values[1].text as workerTypes,
+        foreignWorkerCount: parseInt(item.column_values[3].text || "0")
+      };
     });
 
     setData(data);
@@ -34,7 +42,8 @@ export const useContractorsLazyQuery = (time: "today" | "tomorrow") => {
 };
 
 export const useContractorsQuery = (time: "today" | "tomorrow" = "today") => {
-  let query = time === "today" ? getTodayContractors : getTomorrowContractors;
+  let query =
+    time === "today" ? getTodayContractorsV2 : getTomorrowContractorsV2;
   const [data, setData] = useState<contractorsCount>({});
   const {
     data: d,
@@ -54,7 +63,11 @@ export const useContractorsQuery = (time: "today" | "tomorrow" = "today") => {
     (
       d as getContractorDateAndCountQueryResult
     ).boards[0].items_page.items.forEach((item) => {
-      data[item.name] = parseInt(item.column_values[0].text);
+      data[item.column_values[0].text] = {
+        count: parseInt(item.column_values[2].text),
+        workerType: item.column_values[1].text as workerTypes,
+        foreignWorkerCount: parseInt(item.column_values[3].text || "0")
+      };
     });
 
     setData(data);
@@ -67,20 +80,4 @@ export const useContractorsQuery = (time: "today" | "tomorrow" = "today") => {
     refetch,
     networkStatus
   };
-};
-
-export const useGetDocURL = (name: string, date: string, count: number) => {
-  const [loading, setLoading] = useState(false);
-  const [url, setUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const url = new File(name, date, count).getFileURL();
-      setUrl(url);
-      setLoading(false);
-    })();
-  }, [name, date, count]);
-
-  return { url, loading };
 };

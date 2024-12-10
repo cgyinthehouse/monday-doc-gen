@@ -32,24 +32,18 @@ export default async function generateDoc(
   count: number,
   workerType: (typeof workerTypes)[number]
 ): Promise<Blob> {
-  let file = "2.危害因素告知單.docx";
+  let file: string;
   const CELLS_PER_PAGE = 24;
   const pages = Math.ceil(count / CELLS_PER_PAGE);
 
-  switch (pages) {
-    case 1:
-      break;
-    case 2:
-      file = "2.危害因素告知單-2.docx";
-      break;
-    case 3:
-      file = "2.危害因素告知單-3.docx";
-      break;
-    case 4:
-      file = "2.危害因素告知單-4.docx";
-    default:
-      throw new Error("page exceed");
+  if (pages > 4) {
+    throw new Error("Maximum of 4 pages is only supported");
+  } else if (pages > 1) {
+    file = `2.危害因素告知單-${pages}.docx`;
+  } else {
+    file = "2.危害因素告知單.docx";
   }
+
   // Load the docx file as binary content
   const content = fs.readFileSync(
     path.resolve(__dirname, `../templates/${file}`),
@@ -75,7 +69,7 @@ export default async function generateDoc(
     month: m,
     date: d,
     count,
-    workerType: workerType === undefined ? "佔位文字" : workerType
+    workerType
   });
 
   fs.existsSync(path.resolve(__dirname, "../outputs")) ||
@@ -91,7 +85,10 @@ export default async function generateDoc(
   });
 
   fs.writeFileSync(
-    path.resolve(__dirname, `../outputs/${contractor}_${date}.docx`),
+    path.resolve(
+      __dirname,
+      `../outputs/${contractor}_${workerType}_${date}.docx`
+    ),
     buf
   );
 

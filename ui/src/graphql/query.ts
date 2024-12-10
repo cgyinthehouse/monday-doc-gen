@@ -58,6 +58,28 @@ export const getTodayContractors = gql`
   }
 `;
 
+// 填表人、承包商、工種、出工人數、外籍工作者人數
+export const getTodayContractorsV2 = gql`
+  query getTodayContractors_v2 {
+    boards(ids: 7970779689) {
+      items_page(
+        query_params: {
+          rules: { column_id: "date9__1", compare_value: "TODAY" }
+        }
+      ) {
+        items {
+          name
+          column_values(
+            ids: [ "name", "color__1", "color08__1", "numeric__1", "numeric1__1"]
+          ) {
+            text
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const getTomorrowContractors = gql`
   query getTomorrowContractors {
     boards(ids: 7652880320) {
@@ -69,6 +91,28 @@ export const getTomorrowContractors = gql`
         items {
           name
           column_values(types: [numbers]) {
+            text
+          }
+        }
+      }
+    }
+  }
+`;
+
+// 填表人、承包商、工種、出工人數、外籍工作者人數
+export const getTomorrowContractorsV2 = gql`
+  query getTomorrowContractors_v2 {
+    boards(ids: 7970779689) {
+      items_page(
+        query_params: {
+          rules: { column_id: "date9__1", compare_value: "TOMORROW" }
+        }
+      ) {
+        items {
+          name
+          column_values(
+            ids: [ "name", "color__1", "color08__1", "numeric__1", "numeric1__1"]
+          ) {
             text
           }
         }

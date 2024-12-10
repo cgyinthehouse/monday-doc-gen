@@ -7,7 +7,11 @@ export interface contractorsDateCountData {
 }
 
 export interface contractorsCount {
-  [name: string]: number;
+  [name: string]: {
+    count: number;
+    workerType: workerTypes;
+    foreignWorkerCount: number;
+  };
 }
 
 export interface getContractorDateAndCountQueryResult {

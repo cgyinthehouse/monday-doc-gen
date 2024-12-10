@@ -8,11 +8,11 @@
     "preview": "vite preview --port 8302",
     "dev": "npm run stop && concurrently \"npm run server\" \"npm run expose\"",
     "build": "vite build",
-    "expose": "mapps tunnel:create -p 8301 -a 10226762",
+    "expose": "mapps tunnel:create -p 8302 -a 10226762",
     "server": "vite",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "stop": "kill-port 8301 && kill-port 4049 && kill-port 4040"
+    "stop": "kill-port 8302 && kill-port 4049 && kill-port 4040"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",

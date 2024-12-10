@@ -12,7 +12,6 @@
 	"author": "kentchen",
 	"license": "ISC",
 	"dependencies": {
-		"@valentiniljaz/docx-merger": "^0.3.1",
 		"body-parser": "^1.20.3",
 		"docxtemplater": "^3.51.1",
 		"express": "^4.21.1",
